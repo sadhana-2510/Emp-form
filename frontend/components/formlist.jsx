@@ -10,7 +10,7 @@ const EmployeeList = () => {
   // Fetch employee list from backend
   const fetchEmployees = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/employees");
+      const response = await axios.get("https://emp-form-1.onrender.com/api/employees");
       setEmployees(response.data); // Update state with fetched data
       setLoading(false); // Turn off loading
     } catch (err) {
@@ -34,7 +34,7 @@ const EmployeeList = () => {
   // Function to handle delete operation
   const handleDelete = async (employeeId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/employees/${employeeId}`);
+      await axios.delete(`https://emp-form-1.onrender.com/api/employees/${employeeId}`);
       setEmployees(employees.filter(employee => employee.employee_id !== employeeId)); // Remove the employee from the state
       alert("Employee deleted successfully!");
     } catch (err) {

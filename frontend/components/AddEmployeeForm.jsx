@@ -24,7 +24,7 @@ const AddEmployeeForm = () => {
     // Fetch existing employees when component mounts
     const fetchEmployees = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/employees");
+        const response = await axios.get("https://emp-form-1.onrender.com/api/employees");
         setEmployees(response.data);
       } catch (error) {
         console.error("Error fetching employees:", error);
@@ -98,7 +98,7 @@ const AddEmployeeForm = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/employees/add",
+        "https://emp-form-1.onrender.com/api/employees/add",
         formData
       );
       alert(response.data.message);
