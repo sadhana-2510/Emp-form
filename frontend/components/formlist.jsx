@@ -24,6 +24,25 @@ const EmployeeList = () => {
     fetchEmployees(); // Fetch employees on component mount
   }, []);
 
+  // Function to handle edit operation
+  const handleEdit = (employeeId) => {
+    // Logic for editing the employee data, e.g., navigating to an edit page
+    console.log(`Edit employee with ID: ${employeeId}`);
+    // You can redirect to an edit page or display a modal for editing
+  };
+
+  // Function to handle delete operation
+  const handleDelete = async (employeeId) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/employees/${employeeId}`);
+      setEmployees(employees.filter(employee => employee.employee_id !== employeeId)); // Remove the employee from the state
+      alert("Employee deleted successfully!");
+    } catch (err) {
+      console.error(err);
+      alert("Failed to delete employee.");
+    }
+  };
+
   return (
     <div className="employee-list-container">
       <h2 className="employee-heading">Employee List</h2>
@@ -43,6 +62,7 @@ const EmployeeList = () => {
               <th>Department</th>
               <th>Date of Joining</th>
               <th>Role</th>
+              <th>Actions</th> {/* Add actions column */}
             </tr>
           </thead>
           <tbody>
@@ -55,6 +75,10 @@ const EmployeeList = () => {
                 <td>{employee.department}</td>
                 <td>{employee.date_of_joining}</td>
                 <td>{employee.role}</td>
+                <td>
+                  <button onClick={() => handleEdit(employee.employee_id)}>Edit</button>
+                  <button onClick={() => handleDelete(employee.employee_id)}>Delete</button>
+                </td>
               </tr>
             ))}
           </tbody>
