@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./AddEmployeeForm.css";
@@ -16,6 +15,7 @@ const AddEmployeeForm = () => {
 
   const [errors, setErrors] = useState({
     phone_number: "",
+    email: "",
   });
 
   const [employees, setEmployees] = useState([]); // State to hold table data
@@ -50,6 +50,35 @@ const AddEmployeeForm = () => {
           phone_number: "",
         });
       }
+
+      // Check for duplicate phone numbers
+      if (employees.some((employee) => employee.phone_number === value)) {
+        setErrors({
+          ...errors,
+          phone_number: "Phone number already exist.",
+        });
+        return;
+      } else {
+        setErrors({
+          ...errors,
+          phone_number: "",
+        });
+      }
+    }
+
+    if (name === "email") {
+      if (employees.some((employee) => employee.email === value)) {
+        setErrors({
+          ...errors,
+          email: "Email already exist.",
+        });
+        return;
+      } else {
+        setErrors({
+          ...errors,
+          email: "",
+        });
+      }
     }
 
     setFormData({ ...formData, [name]: value });
@@ -61,6 +90,12 @@ const AddEmployeeForm = () => {
       alert("Phone number must be exactly 10 digits.");
       return;
     }
+
+    if (employees.some((employee) => employee.phone_number === formData.phone_number)) {
+      alert("Phone number must be unique.");
+      return;
+    }
+
     try {
       const response = await axios.post(
         "http://localhost:5000/api/employees/add",
@@ -96,7 +131,7 @@ const AddEmployeeForm = () => {
       date_of_joining: "",
       role: "",
     });
-    setErrors({ phone_number: "" });
+    setErrors({ phone_number: "", email: "" });
   };
 
   return (
@@ -144,6 +179,7 @@ const AddEmployeeForm = () => {
             placeholder="Enter Email"
             required
           />
+          {errors.email && <span className="error-message">{errors.email}</span>}
         </div>
 
         <div className="form-group">
@@ -178,7 +214,9 @@ const AddEmployeeForm = () => {
             <option value="Finance">Finance</option>
             <option value="Sales">Sales</option>
             <option value="Marketing">Marketing</option>
-            <option value="IT (Information Technology)">IT (Information Technology)</option>
+            <option value="IT (Information Technology)">
+              IT (Information Technology)
+            </option>
           </select>
         </div>
 
@@ -213,8 +251,14 @@ const AddEmployeeForm = () => {
         </div>
 
         <div className="form-buttons">
-          <button type="submit" className="submit-button">Submit</button>
-          <button type="button" className="reset-button" onClick={handleReset}>
+          <button type="submit" className="submit-button">
+            Submit
+          </button>
+          <button
+            type="button"
+            className="reset-button"
+            onClick={handleReset}
+          >
             Reset
           </button>
         </div>
