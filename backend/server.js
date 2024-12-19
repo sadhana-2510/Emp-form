@@ -7,10 +7,7 @@ const bodyParser = require('body-parser');
 require('dotenv').config();
 const app=express();
 
-app.use(express.static(path.join(__dirname, 'build')));
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
+
 
 
 const port = process.env.PORT || 5000;
@@ -21,13 +18,7 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY
 app.use(cors());
 app.use(bodyParser.json());
 
-// Serve React frontend
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('public'));
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
-  });
-}
+
 
 // Default route status
 app.get('/api/employees/add', (req, res) => {
